@@ -23,7 +23,7 @@ while True:
 
     for category_num, data in categories_dic.items():
         print(f'{category_num:>4} | {data[0]}')
-
+    print(f"{'-' * 30}")
     # 3 | Ask for input category num
     while True:
         chosen_category = input("Choose category num: ")
@@ -44,11 +44,13 @@ while True:
     amount_of_books_needed = input(f"Found {amount_of_books_in_category} books in category.\n"
                                    f"How many should scrap? (type number for exact amount, or 'All' to scrap all "
                                    f"available books): ")
-    if not amount_of_books_needed:
-        amount_of_books_needed = 10
+
     if amount_of_books_needed.lower() == 'all':
         amount_of_books_needed = amount_of_books_in_category
+    elif not amount_of_books_needed or not amount_of_books_needed.isdigit():
+        amount_of_books_needed = 10
 
+    print(f"{'-' * 30}")
     current_book = 1
     for book in books[:int(amount_of_books_needed)]:
         print(f"Progress: {current_book:>3}/{amount_of_books_needed:<3}")
@@ -105,7 +107,7 @@ while True:
             writer = csv.writer(file)
             writer.writerow([data_titles, data_authors, data_categories, data_languages, data_rating,
                              data_rating_by_google, data_categories, data_meta])
-
+    print(f"{'-' * 30}")
     print(f'Done! Results saved in "{categories_dic[chosen_category][0]}.csv"')
 
     while True:
