@@ -2,14 +2,23 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 import logging
+import os
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
+
+try:
+    os.mkdir("Results")
+except FileExistsError:
+    pass
+dir_result_path = "Results/"
+
 
 # 1 | Get www.bookdepository.com
 url = 'https://www.bookdepository.com/'
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
+
 while True:
     # 2 | Print all available book categories in console
     categories_dic = {}
@@ -51,10 +60,10 @@ while True:
         amount_of_books_needed = 10
 
     print(f"{'-' * 30}")
-    current_book = 1
+    current_book = 0
     for book in books[:int(amount_of_books_needed)]:
-        print(f"Progress: {current_book:>3}/{amount_of_books_needed:<3}")
         current_book += 1
+        print(f"Progress: {current_book:>3}/{amount_of_books_needed:<3}")
         link = book.find('a')['href']
         book_link = f"https://www.bookdepository.com{link}"
         response = requests.get(book_link)
@@ -97,18 +106,19 @@ while True:
         logging.info(f"authors: {data_authors}")
 
         # 7 | Write scraped data to .csv file
+
         if current_book == 1:
-            with open(f'{categories_dic[chosen_category][0]}.csv', mode='w') as file:
+            with open(f'{dir_result_path}{categories_dic[chosen_category][0]}.csv', mode='w') as file:
                 writer = csv.writer(file)
                 writer.writerow([data_titles, data_authors, data_categories, data_languages, data_rating,
                                  data_rating_by_google, data_categories, data_meta])
-
-        with open(f'{categories_dic[chosen_category][0]}.csv', mode='a', newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow([data_titles, data_authors, data_categories, data_languages, data_rating,
-                             data_rating_by_google, data_categories, data_meta])
+        else:
+            with open(f'{dir_result_path}{categories_dic[chosen_category][0]}.csv', mode='a', newline="") as file:
+                writer = csv.writer(file)
+                writer.writerow([data_titles, data_authors, data_categories, data_languages, data_rating,
+                                 data_rating_by_google, data_categories, data_meta])
     print(f"{'-' * 30}")
-    print(f'Done! Results saved in "{categories_dic[chosen_category][0]}.csv"')
+    print(f'Done! Results saved in ./Results/"{categories_dic[chosen_category][0]}.csv"')
 
     while True:
         what_is_next = input("Want to parse another category? [y/n]: ").lower()
