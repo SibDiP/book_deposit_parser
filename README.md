@@ -2,8 +2,8 @@
 ---
 
 ## Description:
-Console program for parse specific data from [Book Depository](https://www.bookdepository.com) website and export them
-to .csv file.
+Console program for parse specific book-data (Title, author, etc..) from [Book Depository](https://www.bookdepository.com) website and export them
+to .csv and .json files.
 
 ## How to use:
 1. Choose category num.
@@ -12,3 +12,7 @@ to .csv file.
 
 ## Outcome:
 The results are saved in {category_name}.csv and {category_name}.json files in the "Results" directory.
+
+## License
+
+Copyright 2023, MIT License.
