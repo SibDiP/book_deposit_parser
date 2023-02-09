@@ -1,4 +1,4 @@
-<h1 align="center">Book Depository Parser</h1>
+<h1 align="center">Book Depository Scraper</h1>
 
 
 
